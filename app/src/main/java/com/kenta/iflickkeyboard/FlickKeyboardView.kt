@@ -47,28 +47,33 @@ class FlickKeyboardView @JvmOverloads constructor(
     private var mode = Mode.KANA
     enum class Mode { KANA, SYMBOL }
 
-    // ---- 見た目の寸法(iPhoneのキーサイズ感に寄せる) ----
+    // ---- 見た目の寸法(iPhoneのキーサイズ感・質感に寄せる) ----
     private val density = resources.displayMetrics.density
     private val maxKeyboardWidthPx = (500 * density) // 展開時でも横に間延びしすぎないよう上限
-    private val rowHeightPx = (46 * density)
-    private val bottomRowHeightPx = (46 * density)
-    private val keyGapPx = (4 * density)
-    private val cornerRadius = 6 * density
+    private val rowHeightPx = (48 * density)
+    private val bottomRowHeightPx = (48 * density)
+    private val keyGapPx = (7 * density)
+    private val cornerRadius = 9 * density
 
     private val flickThresholdPx = 22 * density
 
-    private val keyPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+    private val keyPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        setShadowLayer(1.2f * density, 0f, 1f * density, 0x33000000)
+    }
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        textSize = 20 * density
+        textSize = 23 * density
         color = 0xFF000000.toInt()
     }
-    private val subTextPaint = Paint(textPaint).apply {
-        textSize = 12 * density
-        alpha = 160
+    private val funcTextPaint = Paint(textPaint).apply {
+        textSize = 15 * density
     }
-    private val popupPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
-    private val popupTextPaint = Paint(textPaint).apply { textSize = 30 * density }
+    private val popupPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        setShadowLayer(3f * density, 0f, 1.5f * density, 0x44000000)
+    }
+    private val popupTextPaint = Paint(textPaint).apply { textSize = 32 * density }
 
     private var bgColor = 0xFFD1D3D9.toInt()
     private var keyBg = 0xFFFFFFFF.toInt()
@@ -210,20 +215,14 @@ class FlickKeyboardView @JvmOverloads constructor(
         val cx = rect.centerX()
         val cy = rect.centerY()
 
+        // 通常表示は中央の文字だけ(iPhone同様、フリック候補は押した時のポップアップでのみ見せる)
         when (cell.action) {
             Action.TEXT -> {
                 val fk = cell.flickKey
-                if (fk != null) {
-                    canvas.drawText(fk.center, cx, cy + textPaint.textSize / 3, textPaint)
-                    fk.up?.let { canvas.drawText(it, cx, rect.top + subTextPaint.textSize + 4, subTextPaint) }
-                    fk.down?.let { canvas.drawText(it, cx, rect.bottom - 6, subTextPaint) }
-                    fk.left?.let { canvas.drawText(it, rect.left + subTextPaint.textSize, cy + 4, subTextPaint) }
-                    fk.right?.let { canvas.drawText(it, rect.right - subTextPaint.textSize, cy + 4, subTextPaint) }
-                } else {
-                    canvas.drawText(cell.label, cx, cy + textPaint.textSize / 3, textPaint)
-                }
+                val label = fk?.center ?: cell.label
+                canvas.drawText(label, cx, cy + textPaint.textSize / 3, textPaint)
             }
-            else -> canvas.drawText(cell.label, cx, cy + textPaint.textSize / 3, textPaint)
+            else -> canvas.drawText(cell.label, cx, cy + funcTextPaint.textSize / 3, funcTextPaint)
         }
     }
 
