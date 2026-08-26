@@ -1,0 +1,11 @@
+<resources>
+    <color name="keyboard_bg">#D1D3D9</color>
+    <color name="key_bg">#FFFFFF</color>
+    <color name="key_bg_pressed">#B9BDC6</color>
+    <color name="key_function_bg">#A9AEB8</color>
+    <color name="key_function_bg_pressed">#C7CAD1</color>
+    <color name="key_text">#000000</color>
+    <color name="key_text_sub">#000000</color>
+    <color name="popup_bg">#F5F5F5</color>
+    <color name="accent">#0A84FF</color>
+</resources>

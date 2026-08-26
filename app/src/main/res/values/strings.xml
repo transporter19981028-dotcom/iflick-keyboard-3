@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">iFlick Keyboard</string>
+    <string name="setup_instructions">1. 「キーボードを有効化」をタップして設定画面を開く\n2. 「iFlick Keyboard」をONにする\n3. 入力欄でキーボード切替アイコンを押し、iFlick Keyboardを選択</string>
+    <string name="btn_enable">キーボードを有効化</string>
+    <string name="btn_select">入力方法を選択</string>
+</resources>
